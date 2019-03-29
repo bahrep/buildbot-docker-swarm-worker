@@ -1,36 +1,92 @@
+import secrets
+import socket
+
+import docker
+from twisted.internet import threads
+from twisted.python import log
 from buildbot.worker import AbstractLatentWorker
 
 
 class DockerSwarmLatentWorker(AbstractLatentWorker):
-    def __init__(self, name, image, *args, **kwargs):
+    """
+    Latent worker using Docker Swarm to instantiate workers on demand.
+
+    Example:
+
+        >>> from buildbot.plugins import worker
+        >>> w = worker.DockerSwarmLatentWorker(
+                "worker",
+                "buildbot/buildbot-worker",
+            )
+
+    Args:
+        name (str): Botname this machine will supply when it connects.
+        image (str): The image name to use for the containers.
+
+    """
+    def __init__(self, name, image):
+        password = secrets.token_hex(16)
+
+        super().__init__(name, password)
+
+        def aslist(env):
+            return list("=".join(item) for item in env.items())
+
+        self.client = None
+        self.service = None
+        self.service_config = {
+            "image": image,
+            "env": aslist({
+                "BUILDMASTER": socket.gethostname(),
+                "WORKERNAME": name,
+                "WORKERPASS": password,
+            }),
+            "networks": [
+                "buildbot_default",
+            ],
+        }
+
+    def start_instance(self, build):
         """
-        Construct a ``DockerSwarmLatentWorker`` instance.
+        Instantiate a worker for the specified build.
 
-        :param name: Botname this machine will supply when it connects.
-            This is passed to the worker image as WORKERNAME.
+        Creates a thread to start a Docker service.
 
-        :param image: Name of Docker image for buildbot worker.
+        Args:
+            build (:py:class:`buildbot.process.build.Build`): The
+                build to be run on the worker.
 
-        :param masterFQDN: Fully-qualified domain name of buildbot master.  This
-            is passed as BUILDMASTER in the buildbot worker environment. By
-            default, socket.getfqdn is used.  This can include a port
-            specification, which is passed as BUILDMASTER_PORT.
-
-        :param max_builds: Maximum number of simultaneous builds that will be
-            run concurrently on this worker (the default is None for no limit)
-
-        :param properties: properties that will be applied to builds run on this
-            worker
-
-        :param defaultProperties: properties that will be applied to builds run
-            on this worker only if the property has not been set by another
-            source
-
-        :param locks: A list of locks that must be acquired before this worker
-            can be used
-
-        :param build_wait_timeout: Time in seconds to wait for build to start
+        Returns:
+            (:py:class:`twisted.internet.defer.Deferred`): A ``Deferred``
+                with ``True`` to signal that the instance was started.
         """
-        password = kwargs.pop("password", None)
-        super().__init__(name, password, *args, **kwargs)
-        self.image = image
+        def follow_logs():
+            for line in self.service.logs(
+                stdout=True, stderr=True, follow=True, timestamps=False
+            ):
+                log.msg(f"worker {self.service.short_id}: {line}")
+                if self.conn:
+                    break
+
+        def start():
+            self.client = docker.from_env()
+            self.service = self.client.services.create(**self.service_config)
+            follow_logs()
+            return True
+
+        return threads.deferToThread(start)
+
+    def stop_instance(self, fast=False):
+        """
+        Shut down the worker instance.
+
+        Returns:
+            (:py:class:`twisted.internet.defer.Deferred`)
+
+        Args:
+            fast (bool): If true, do not wait for service to shut down.
+
+        Creates a thread to remove the Docker service.
+        """
+        if self.service:
+            return threads.deferToThread(self.service.remove)
