@@ -2,10 +2,16 @@ language: python
 sudo: required
 dist: xenial
 python:
-  - "3.7"
+- '3.7'
 install: make travis-install
 script: make travis-script
 branches:
   only:
-    - master
-
+  - master
+deploy:
+  provider: pypi
+  user: cjolowicz
+  password:
+    secure: nORN5SEZ11BjOSB36O6QrXhW+hkbPCHNZ1rvcF/+X8XocOBmnjzNEAi+NY+j/+An/+ceVCj3EPQM2oIvj6Gs6Yk0BigNiGy5rH/TY5vsuGGnz6t4bBwxH11AHpbuDbNu8534IAS23qHFBtLpQ4UrQhObduk9iuC1gDlT6SKzSCXVY9e2Xkh+E/xMO1SB9LagdYmxj8iwM9I+Ewv2K9oyYgF2Kdvm9i6Soc8kZhVe/VBxVhtSjuMaHVy7sL/OwMth4edC+ZNPATZhPaauk3V3FlQo3OBLQTI5KvgD/xnqf2Btrz9tFPEGiRoN68EixyIt2BjnoYOgUwKxqYtihVQ/dqtK/bTkgkyd0ojdUbOA20jXjg/QpqSI2+4rVoXqzawnSlPHduRnNVAXGdBr6vEjwoqhxav9Zrha9OJ1tzqkNcYWi4YQi0bJJeQu5ESuaU7UAyfkpynqw3sW8NQQG2/yrHJ0trbOOv1wK+G4jw77xwFcAKSAn5HHOEEOboguZTmYIVmQjyIheSZtOIJTBQKIvF55Rw1XQRLXcPI/ikt69+cAI8FIbwIRfl6Vv5aK2Z/mG1CNqSrEA+NttUGWZfv1Ve23fvAreE7e6jNPXvWmS75RJbllfpDod+SEFkPPD6UxHsu0nd+cGLWoeloSmomLEq7/9LeSJ+UaoWpGnrIqtuw=
+  on:
+    tags: true
