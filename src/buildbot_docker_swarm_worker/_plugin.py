@@ -95,4 +95,10 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         """
         if not self.service:
             return defer.succeed(None)
-        return threads.deferToThread(self.service.remove)
+
+        def stop():
+            self.service.remove()
+            self.service = None
+            self.client = None
+
+        return threads.deferToThread(stop)
