@@ -27,7 +27,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
     def __init__(self, name, image):
         password = secrets.token_hex(16)
 
-        super().__init__(name, password)
+        super().__init__(name, password, build_wait_timeout=0)
 
         def aslist(env):
             return list("=".join(item) for item in env.items())
