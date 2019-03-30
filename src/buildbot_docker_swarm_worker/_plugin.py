@@ -2,7 +2,7 @@ import secrets
 import socket
 
 import docker
-from twisted.internet import threads
+from twisted.internet import defer, threads
 from twisted.python import log
 from buildbot.worker import AbstractLatentWorker
 
@@ -74,6 +74,11 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
             follow_logs()
             return True
 
+        if self.service:
+            raise ValueError(
+                f"worker already created with ID {self.service.short_id}"
+            )
+
         return threads.deferToThread(start)
 
     def stop_instance(self, fast=False):
@@ -88,5 +93,6 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
 
         Creates a thread to remove the Docker service.
         """
-        if self.service:
-            return threads.deferToThread(self.service.remove)
+        if not self.service:
+            return defer.succeed(None)
+        return threads.deferToThread(self.service.remove)
