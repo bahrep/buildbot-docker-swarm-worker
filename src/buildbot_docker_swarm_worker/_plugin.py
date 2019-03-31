@@ -29,21 +29,32 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
 
         super().__init__(name, password, build_wait_timeout=0)
 
+        def get_current_container():
+            try:
+                with open("/proc/self/cpuset") as f:
+                    cid = f.read().strip().split("/")[-1]
+                return self.client.containers.get(cid)
+            except (FileNotFoundError, docker.errors.NotFound):
+                pass
+
+        def get_container_networks():
+            container = get_current_container()
+            if container:
+                return list(container.attrs["NetworkSettings"]["Networks"])
+
         def aslist(env):
             return list("=".join(item) for item in env.items())
 
-        self.client = None
+        self.client = docker.from_env()
         self.service = None
         self.service_config = {
             "image": image,
+            "networks": get_container_networks(),
             "env": aslist({
                 "BUILDMASTER": socket.gethostname(),
                 "WORKERNAME": name,
                 "WORKERPASS": password,
             }),
-            "networks": [
-                "buildbot_default",
-            ],
         }
 
     def start_instance(self, build):
@@ -69,7 +80,6 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
                     break
 
         def start():
-            self.client = docker.from_env()
             self.service = self.client.services.create(**self.service_config)
             follow_logs()
             return True
@@ -99,6 +109,5 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         def stop():
             self.service.remove()
             self.service = None
-            self.client = None
 
         return threads.deferToThread(stop)
