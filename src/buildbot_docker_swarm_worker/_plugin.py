@@ -89,7 +89,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
             (:py:class:`twisted.internet.defer.Deferred`)
 
         Args:
-            fast (bool): If true, do not wait for service to shut down.
+            fast (bool): ignored
 
         Creates a thread to remove the Docker service.
         """
