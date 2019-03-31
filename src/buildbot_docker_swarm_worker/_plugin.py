@@ -33,7 +33,9 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
             try:
                 with open("/proc/self/cpuset") as f:
                     cid = f.read().strip().split("/")[-1]
-                return self.client.containers.get(cid)
+
+                if cid:
+                    return self.client.containers.get(cid)
             except (FileNotFoundError, docker.errors.NotFound):
                 pass
 
