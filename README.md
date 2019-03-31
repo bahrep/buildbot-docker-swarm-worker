@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/cjolowicz/buildbot-docker-swarm-worker.svg?style=flat-square)](https://travis-ci.org/cjolowicz/buildbot-docker-swarm-worker)
+[![Build Status](https://img.shields.io/travis/cjolowicz/buildbot-docker-swarm-worker.svg?style=flat-square)](https://travis-ci.com/cjolowicz/buildbot-docker-swarm-worker)
 [![Coverage Status](https://img.shields.io/coveralls/cjolowicz/buildbot-docker-swarm-worker.svg?style=flat-square)](https://coveralls.io/github/cjolowicz/buildbot-docker-swarm-worker?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/ambv/black)
 
