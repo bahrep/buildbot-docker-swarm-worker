@@ -42,7 +42,11 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         def get_container_networks():
             container = get_current_container()
             if container:
-                return list(container.attrs["NetworkSettings"]["Networks"])
+                return [
+                    network
+                    for network in container.attrs["NetworkSettings"]["Networks"]
+                    if network != "ingress"
+                ]
 
         def aslist(env):
             return list("=".join(item) for item in env.items())

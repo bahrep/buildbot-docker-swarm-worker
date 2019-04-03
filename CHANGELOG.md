@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.1.3 - 2019-04-03
+### Fixed
+- Fix Docker API error due to explicitly attaching service to ingress network.
+
 ## 0.1.2 - 2019-03-31
 ### Fixed
 - CI: Do not reject jobs for tagged commits.
