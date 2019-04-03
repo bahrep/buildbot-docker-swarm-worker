@@ -5,21 +5,30 @@
 
 # buildbot-docker-swarm-worker
 
-Buildbot worker for Docker Swarm
-
-This project has a [changelog](CHANGELOG.md) and
-[contribution guidelines](CONTRIBUTING.md).
-
-## Contents
-
-This package provides a worker plugin for
-[buildbot](https://buildbot.net) to deploy buildbot workers on
-[Docker Swarm](https://docs.docker.com/engine/swarm/).
+This package provides a [buildbot](https://buildbot.net) plugin to
+deploy buildbot workers on demand as services on a
+[Docker Swarm](https://docs.docker.com/engine/swarm/) cluster.
 
 ## Installation
 
-To install this package,
+Install this package from
+[PyPI](https://pypi.org/project/buildbot-docker-swarm-worker/):
 
 ```sh
 pip install buildbot-docker-swarm-worker
 ```
+
+## Usage
+
+```python
+from buildbot.plugins import worker
+swarm_worker = worker.DockerSwarmLatentWorker(
+    "docker-swarm-worker",
+    "buildbot/buildbot-worker:latest",
+)
+```
+
+## Related projects
+
+- https://github.com/cjolowicz/docker-buildbot
+- https://github.com/cjolowicz/docker-buildbot-worker
