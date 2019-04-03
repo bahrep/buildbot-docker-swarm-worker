@@ -1,5 +1,5 @@
-[![PyPI](https://img.shields.io/pypi/v/buildbot-docker-swarm-worker.svg)](https://pypi.org/project/buildbot-docker-swarm-worker/)
-[![Build Status](https://travis-ci.com/cjolowicz/buildbot-docker-swarm-worker.svg?branch=master)](https://travis-ci.com/cjolowicz/buildbot-docker-swarm-worker)
+[![PyPI](https://img.shields.io/pypi/v/buildbot-docker-swarm-worker.svg?style=flat-square)](https://pypi.org/project/buildbot-docker-swarm-worker/)
+[![Build Status](https://img.shields.io/travis/com/cjolowicz/buildbot-docker-swarm-worker.svg?style=flat-square)](https://travis-ci.com/cjolowicz/buildbot-docker-swarm-worker)
 [![Coverage Status](https://img.shields.io/coveralls/cjolowicz/buildbot-docker-swarm-worker.svg?style=flat-square)](https://coveralls.io/github/cjolowicz/buildbot-docker-swarm-worker?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/ambv/black)
 
