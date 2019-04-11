@@ -18,13 +18,13 @@ Install [tox](https://pypi.org/project/tox/) to run the test suite
 against different interpreters:
 
 ```shell
-pip install --user tox
+pip install tox-pyenv
 ```
 
 Set up a virtualenv:
 
 ```sh
-make venv
+python -m venv venv
 source venv/bin/activate
 ```
 
