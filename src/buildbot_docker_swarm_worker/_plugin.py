@@ -24,6 +24,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         image (str): The image name to use for the containers.
 
     """
+
     def __init__(self, name, image):
         password = secrets.token_hex(16)
 
@@ -56,11 +57,13 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         self.service_config = {
             "image": image,
             "networks": get_container_networks(),
-            "env": aslist({
-                "BUILDMASTER": socket.gethostname(),
-                "WORKERNAME": name,
-                "WORKERPASS": password,
-            }),
+            "env": aslist(
+                {
+                    "BUILDMASTER": socket.gethostname(),
+                    "WORKERNAME": name,
+                    "WORKERPASS": password,
+                }
+            ),
         }
 
     def start_instance(self, build):
@@ -77,6 +80,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
             (:py:class:`twisted.internet.defer.Deferred`): A ``Deferred``
                 with ``True`` to signal that the instance was started.
         """
+
         def follow_logs():
             for line in self.service.logs(
                 stdout=True, stderr=True, follow=True, timestamps=False
@@ -91,9 +95,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
             return True
 
         if self.service:
-            raise ValueError(
-                f"worker already created with ID {self.service.short_id}"
-            )
+            raise ValueError(f"worker already created with ID {self.service.short_id}")
 
         return threads.deferToThread(start)
 
