@@ -1,11 +1,5 @@
-PYTHON=python3.7
-
 .PHONY: all
 all:
-
-.PHONY: venv
-venv:
-	$(PYTHON) -m venv venv
 
 requirements/%.txt: requirements/%.in
 	pip install pip-tools
