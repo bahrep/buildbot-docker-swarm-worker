@@ -1,17 +1,6 @@
 .PHONY: all
 all:
 
-requirements/%.txt: requirements/%.in
-	pip install pip-tools
-	python -m piptools compile \
-	    --verbose \
-	    --upgrade \
-	    --generate-hashes \
-	    --output-file=$@ $<
-
-.PHONY: requirements
-requirements: requirements/base.txt requirements/dev.txt
-
 .PHONY: install
 install:
 	pip install -e .[dev]

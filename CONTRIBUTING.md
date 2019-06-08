@@ -64,21 +64,6 @@ Requirements are declared in the files
 [requirements/base.in](requirements/base.in) and
 [requirements/dev.in](requirements/dev.in).
 
-Requirements are pinned to specific versions in the files
-[requirements/base.txt](requirements/base.txt) and
-[requirements/dev.txt](requirements/dev.txt). These files are
-generated using the following command:
-
-```sh
-make requirements
-```
-
-To force an upgrade of all requirements, invoke the following command:
-
-```sh
-make -B requirements
-```
-
 ## Releasing
 
 This project adheres to
