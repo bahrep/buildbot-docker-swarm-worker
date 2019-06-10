@@ -1,7 +1,7 @@
 from ._plugin import DockerSwarmLatentWorker
 
 
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 
 __title__ = "buildbot-docker-swarm-worker"
 __description__ = "Buildbot worker for Docker Swarm"
