@@ -1,2 +1,2 @@
 buildbot
-docker
+docker>=4.0
