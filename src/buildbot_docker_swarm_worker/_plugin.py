@@ -56,6 +56,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         self.service = None
         self.service_config = {
             "image": image,
+            "init": True,
             "networks": get_container_networks(),
             "restart_policy": docker.types.RestartPolicy(condition="none"),
             "env": aslist(
