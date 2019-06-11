@@ -65,7 +65,6 @@ EXTRAS_REQUIRE = {
         "coveralls",
         "flake8",
         "flake8-bugbear",
-        "pip-tools",
         "pytest",
         "pytest-cov",
     ]
