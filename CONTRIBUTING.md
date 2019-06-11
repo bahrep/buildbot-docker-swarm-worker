@@ -58,12 +58,6 @@ Run the test suite using `tox`:
 tox
 ```
 
-## Requirements
-
-Requirements are declared in the files
-[requirements/base.in](requirements/base.in) and
-[requirements/dev.in](requirements/dev.in).
-
 ## Releasing
 
 This project adheres to

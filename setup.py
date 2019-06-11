@@ -57,6 +57,20 @@ def find_meta(name):
 CLASS = "DockerSwarmLatentWorker"
 PACKAGE = "buildbot_docker_swarm_worker"
 META_FILE = read("src", PACKAGE, "__init__.py")
+INSTALL_REQUIRES = ["buildbot", "docker>=4.0"]
+EXTRAS_REQUIRE = {
+    "dev": [
+        "black",
+        "bumpversion",
+        "coveralls",
+        "flake8",
+        "flake8-bugbear",
+        "pip-tools",
+        "pytest",
+        "pytest-cov",
+    ]
+}
+
 SETUP_KWARGS = {
     "name": NAME,
     "version": find_meta("version"),
@@ -73,8 +87,8 @@ SETUP_KWARGS = {
     "packages": setuptools.find_packages(where="src"),
     "package_dir": {"": "src"},
     "python_requires": ">=" + format_version(PYTHON_VERSION),
-    "install_requires": read("requirements", "base.in").splitlines(),
-    "extras_require": {"dev": read("requirements", "dev.in").splitlines()},
+    "install_requires": INSTALL_REQUIRES,
+    "extras_require": EXTRAS_REQUIRE,
     "entry_points": {"buildbot.worker": [f"{CLASS} = {PACKAGE}:{CLASS}"]},
     "classifiers": [
         "Development Status :: 3 - Alpha",
