@@ -25,7 +25,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
 
     """
 
-    def __init__(self, name, image):
+    def __init__(self, name, image, credspec_file):
         password = secrets.token_hex(16)
 
         super().__init__(name, password, build_wait_timeout=0)
@@ -56,6 +56,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
         self.service = None
         self.service_config = {
             "image": image,
+            "privileges": Privileges(credentialspec_file = credspec_file),
             "init": True,
             "networks": get_container_networks(),
             "restart_policy": docker.types.RestartPolicy(condition="none"),
