@@ -25,7 +25,7 @@ class DockerSwarmLatentWorker(AbstractLatentWorker):
 
     """
 
-    def __init__(self, name, image, credspec_file):
+    def __init__(self, name, image, credspec_file=None):
         password = secrets.token_hex(16)
 
         super().__init__(name, password, build_wait_timeout=0)
